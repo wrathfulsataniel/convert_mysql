@@ -1,0 +1,16 @@
+{
+    "name": "thingengineer/mysqli-database-class",
+    "description": "install",
+    "autoload": {
+        "psr-4": {
+            "Thingengineer\\MysqliDatabaseClass\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Gelo",
+            "email": "gelo.ostonal.pixel8@gmail.com"
+        }
+    ],
+    "require": {}
+}

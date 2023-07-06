@@ -1,12 +1,15 @@
 <?php
+require_once 'MySQLiDb.php';
+
 $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "gmomysql";
 
 // Create connection
-$connection = new mysqli($servername, $username, $password, $database);
+$db = new MysqliDb($servername, $username, $password, $database);
 
+$id = "";
 $name = "";
 $email = "";
 $phone = "";
@@ -15,51 +18,74 @@ $address = "";
 $errorMessage = "";
 $successfullMessage = "";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if (!isset($_GET["id"])) {
+        header("location: /ten8/index.php");
+        exit;
+    }
+    $id = $_GET["id"];
+
+    // Read the row of the selected info from the database table
+    $row = $db->where('id', $id)->getOne('info');
+
+    if (!$row) {
+        header("location: /ten8/index.php");
+        exit;
+    }
+
+    $name = $row["name"];
+    $email = $row["email"];
+    $phone = $row["phone"];
+    $address = $row["address"];
+} else {
+    // POST method: Update the data of the new info
+    $id = $_POST["id"];
     $name = $_POST["name"];
     $email = $_POST["email"];
     $phone = $_POST["phone"];
     $address = $_POST["address"];
 
     do {
-        if ( empty($name) || empty($email) || empty($phone) || empty($address) ) {
+        if (empty($id) || empty($name) || empty($email) || empty($phone) || empty($address)) {
             $errorMessage = "All the fields are required";
             break;
         }
 
-        // Add new info to the database
-        $sql = "INSERT INTO info (name, email, phone, address)" .
-        "VALUES ('$name', '$email', '$phone', '$address')";
-        $result = $connection->query($sql);
+        $data = [
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'address' => $address
+        ];
+
+        $db->where('id', $id);
+        $result = $db->update('info', $data);
 
         if (!$result) {
-            $errorMessage = "Invalid query: " . $connection->error;
+            $errorMessage = "Invalid query: " . $db->getLastError();
             break;
         }
-    
-        $name = "";
-        $email = "";
-        $phone = "";
-        $address = "";
 
-        $successfullMessage = "Information added correctly";
+        $successfullMessage = "Information updated correctly";
 
-        header("location: /activities/ten7/index.php");
+        header("location: /ten8/index.php");
         exit;
-
     } while (false);
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEN 7</title>
+    <title>TEN 8</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+
 <body>
     <div class="container my-5">
         <h2>New Information</h2>
@@ -78,53 +104,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         ?>
         <form method="post">
+            <input type="hidden" name="id" value="<?php echo $id; ?>">
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Name</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="name" value="<?php echo $name; ?>" required>
+                    <input type="text" class="form-control" name="name" value="<?php echo $name; ?>">
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Email</label>
                 <div class="col-sm-6">
-                    <input type="email" class="form-control" name="email" value="<?php echo $email; ?>" required>
+                    <input type="text" class="form-control" name="email" value="<?php echo $email; ?>">
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Phone</label>
                 <div class="col-sm-6">
-                    <input type="number" class="form-control" name="phone" value="<?php echo $phone; ?>" required>
+                    <input type="text" class="form-control" name="phone" value="<?php echo $phone; ?>">
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Address</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="address" value="<?php echo $address; ?>" required>
+                    <input type="text" class="form-control" name="address" value="<?php echo $address; ?>">
                 </div>
             </div>
 
             <?php
-        if (!empty($successfullMessage)) {
-            echo "
+            if (!empty($successfullMessage)) {
+                echo "
             <div class='alert alert-success alert-dismissible fade show' role='alert'>
                 <strong>$successfullMessage</strong>
                 <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
             </div>
             ";
-        }
-        ?>
+            }
+            ?>
 
             <div class="row mb-3">
                 <div class="offset-sm-3 col-sm-3 d-grid">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
                 <div class="col-sm-3 d-grid">
-                    <a class="btn btn-outline-primary" href="/activities/ten7/index.php" role="button">Cancel</a>
+                    <a class="btn btn-outline-primary" href="/ten8/index.php" role="button">Cancel</a>
                 </div>
             </div>
         </form>
-
     </div>
-    
 </body>
 </html>

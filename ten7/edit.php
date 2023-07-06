@@ -19,7 +19,7 @@ $successfullMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if ( !isset($_GET["id"]) ) {
-        header("location: /activities/ten7/index.php");
+        header("location: /ten7/index.php");
         exit;
     }
     $id = $_GET["id"];
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $row = $result->fetch_assoc();
 
     if (!$row) {
-        header("location: /activities/ten7/index.php");
+        header("location: /ten7/index.php");
         exit;
     }
     
@@ -66,7 +66,7 @@ else {
 
         $successfullMessage = "Information updated correctly";
 
-        header("location: /activities/ten7/index.php");
+        header("location: /ten7/index.php");
         exit;
     } while (false);
 }
@@ -142,7 +142,7 @@ else {
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
                 <div class="col-sm-3 d-grid">
-                    <a class="btn btn-outline-primary" href="/activities/ten7/index.php" role="button">Cancel</a>
+                    <a class="btn btn-outline-primary" href="/ten7/index.php" role="button">Cancel</a>
                 </div>
             </div>
         </form>

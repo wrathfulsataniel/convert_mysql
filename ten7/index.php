@@ -9,7 +9,7 @@
 <body>
     <div class="container my-5">
         <h2>CRUD Functionality</h2>
-        <a class="btn btn-primary" href="/activities/ten7/create.php" role="button">New Infomation</a>
+        <a class="btn btn-primary" href="/ten7/create.php" role="button">New Infomation</a>
         <br>
         <table class="table">
             <thead>
@@ -57,8 +57,8 @@
                     <td>$row[address]</td>
                     <td>$row[created_at]</td>
                     <td>
-                        <a class='btn btn-primary btn-sm' href='/activities/ten7/edit.php?id=$row[id]'>Edit</a>
-                        <a class='btn btn-danger btn-sm' href='/activities/ten7/delete.php?id=$row[id]'>Delete</a>
+                        <a class='btn btn-primary btn-sm' href='/ten7/edit.php?id=$row[id]'>Edit</a>
+                        <a class='btn btn-danger btn-sm' href='/ten7/delete.php?id=$row[id]'>Delete</a>
                     </td>
                     </tr>
                     ";
