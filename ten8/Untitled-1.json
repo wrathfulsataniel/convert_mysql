@@ -1,0 +1,3 @@
+"require": {
+        "thingengineer/php-mysqli-database-class": "^2.9"
+    }

@@ -14,6 +14,6 @@ if ( isset($_GET["id"]) ) {
     $connection->query($sql);
 }
 
-header("location: /activities/ten7/index.php");
+header("location: /ten7/index.php");
         exit;
 ?>
